@@ -2,6 +2,7 @@ import { pool } from "../db/connection.js";
 import { getCategoryByIdService } from "../services/categories.services.js";
 import { getProductByIdService } from "../services/products.sevices.js";
 import { getSupplierByIdService } from "../services/suppliers.services.js";
+import { getTransactionByIdService } from "../services/transactions.services.js";
 import { getUserByIdService } from "../services/users.services.js";
 
 export const validateEmail = async (req, res, next) => {
@@ -72,9 +73,23 @@ export const validateProductParams = async (req, res, next) => {
       return res.status(400).send({ message: "Product ID not provided." });
     }
     const product = await getProductByIdService(id);
-    console.log(product)
     if (!product.length) {
       return res.status(404).send({ message: "Product not found, check your ID." });
+    }
+    next();
+  } catch (error) {
+    return res.status(500).send({ message: `Server  error: ${error.message}` });
+  }
+}
+export const validateTransactionParams = async (req, res, next) => {
+  try {
+    const id = req.params.id
+    if (!id) {
+      return res.status(400).send({ message: "Transaction ID not provided." });
+    }
+    const transaction = await getTransactionByIdService(id);
+    if (!transaction.length) {
+      return res.status(404).send({ message: "Transaction not found, check your ID." });
     }
     next();
   } catch (error) {
@@ -102,9 +117,39 @@ export const validateCategoryBody = async (req, res, next) => {
     if (!id) {
       return res.status(400).send({ message: "Category ID not provided." });
     }
-    const supplier = await getSupplierByIdService(id);
-    if (!supplier.length) {
+    const category = await getSupplierByIdService(id);
+    if (!category.length) {
       return res.status(404).send({ message: "Category not found, check your ID." });
+    }
+    next();
+  } catch (error) {
+    return res.status(500).send({ message: `Server error: ${error.message}` });
+  }
+}
+export const validateUserBody = async (req, res, next) => {
+  try {
+    const id = req.params.userId;
+    if (!id) {
+      return res.status(400).send({ message: "User ID not provided." });
+    }
+    const user = await getUserByIdService(id);
+    if (!user.length) {
+      return res.status(404).send({ message: "User not found, check your ID." });
+    }
+    next();
+  } catch (error) {
+    return res.status(500).send({ message: `Server error: ${error.message}` });
+  }
+}
+export const validateProductBody = async (req, res, next) => {
+  try {
+    const id = req.params.productId;
+    if (!id) {
+      return res.status(400).send({ message: "Product ID not provided." });
+    }
+    const product = await getProductByIdService(id);
+    if (!product.length) {
+      return res.status(404).send({ message: "Product not found, check your ID." });
     }
     next();
   } catch (error) {
@@ -133,6 +178,35 @@ export const validateCategoryIfPresent = async (req, res, next) => {
       const category = await getCategoryByIdService(id);
       if (!category.length) {
         return res.status(404).send({ message: "Category not found, check your ID." });
+      }
+    }
+
+    next();
+  } catch (error) {
+    return res.status(500).send({ message: `Server error: ${error.message}` });
+  }
+};
+export const validateUserIfPresent = async (req, res, next) => {
+  try {
+    const id = req.body.userId;
+    if (id) {
+      const user = await getUserByIdService(id);
+      if (!user.length) {
+        return res.status(404).send({ message: "User not found, check your ID." });
+      }
+    }
+    next();
+  } catch (error) {
+    return res.status(500).send({ message: `Server error: ${error.message}` });
+  }
+};
+export const validateProductIfPresent = async (req, res, next) => {
+  try {
+    const id = req.body.productId;
+    if (id) {
+      const product = await getProductByIdService(id);
+      if (!product.length) {
+        return res.status(404).send({ message: "Product not found, check your ID." });
       }
     }
 
