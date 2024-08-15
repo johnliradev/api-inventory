@@ -1,0 +1,1154 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Inventory API Documentation",
+    "description": "API for managing product inventory, allowing CRUD operations on categories and items. Use this documentation to explore the available endpoints.",
+    "contact": {
+      "email": "lyradev@proton.me"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3333",
+      "description": "Local Server"
+    }
+  ],
+  "paths": {
+    "/categories/": {
+      "get": {
+        "summary": "Returns all categories",
+        "parameters": [],
+        "tags": [
+          "Categories"
+        ],
+        "responses": {
+          "200": {
+            "description": "A categories array",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "schema": "#/components/schemas/category",
+                  "example": [
+                    {
+                      "category_id": 5,
+                      "category_name": "joias",
+                      "created_at": "2024-08-07T15:00:28.000Z",
+                      "updated_at": "2024-08-07T15:00:28.000Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a new category",
+        "tags": [
+          "Categories"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/category"
+              },
+              "example": {
+                "name": "new category"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Category created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/category"
+                },
+                "example": {
+                  "category_id": 6,
+                  "category_name": "new category",
+                  "created_at": "2024-08-07T15:05:00.000Z",
+                  "updated_at": "2024-08-07T15:05:00.000Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Submit name field for create category."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete all categories",
+        "tags": [
+          "Categories"
+        ],
+        "responses": {
+          "200": {
+            "description": "All categories successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/category"
+                },
+                "example": {
+                  "message": "All categories successfully deleted"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/categories/{id}": {
+      "get": {
+        "summary": "Return category by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Category Id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Categories"
+        ],
+        "responses": {
+          "200": {
+            "description": "Current id category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "schema": "#/components/schemas/category",
+                  "example": [
+                    {
+                      "category_id": 5,
+                      "category_name": "Shoes",
+                      "created_at": "2024-08-07T15:00:28.000Z",
+                      "updated_at": "2024-08-07T15:00:28.000Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found, check your id."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete category by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Category Id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Categories"
+        ],
+        "responses": {
+          "200": {
+            "description": "Category deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "schema": "#/components/schemas/category",
+                  "example": [
+                    {
+                      "message": "Category successfully deleted!"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found, check your id."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update category",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Category Id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/category"
+              },
+              "example": {
+                "name": "updated category name"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Categories"
+        ],
+        "responses": {
+          "200": {
+            "description": "Category updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "schema": "#/components/schemas/category",
+                  "example": [
+                    {
+                      "message": "Category successfully deleted!"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Submit name field for create a category."
+          },
+          "404": {
+            "description": "Category not found, check your id. "
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/suppliers": {
+      "get": {
+        "summary": "Returns all suppliers",
+        "parameters": [],
+        "tags": [
+          "Suppliers"
+        ],
+        "responses": {
+          "200": {
+            "description": "A suppliers array",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "schema": "#/components/schemas/supplier",
+                  "example": [
+                    {
+                      "supplier_id": 1,
+                      "supplier_name": "John Doe",
+                      "supplier_contact": 98922422312,
+                      "supplier_email": "johndoe@example.com",
+                      "created_at": "2024-08-07T15:00:28.000Z",
+                      "updated_at": "2024-08-07T15:00:28.000Z"
+                    },
+                    {
+                      "supplier_id": 2,
+                      "supplier_name": "Donavan Heart",
+                      "supplier_contact": 81222983022,
+                      "supplier_email": "d.heart@example.com",
+                      "created_at": "2024-08-07T15:00:28.000Z",
+                      "updated_at": "2024-08-07T15:00:28.000Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "There are no registered Suppliers"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a new supplier",
+        "tags": [
+          "Suppliers"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/supplier"
+              },
+              "example": {
+                "name": "John Doe",
+                "contact": 19927273312,
+                "email": "johndoe@example.com"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Supplier created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/supplier"
+                },
+                "example": {
+                  "message": "Supplier successfully created",
+                  "insertId": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Submit all fields to create a supplier."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete all suppliers",
+        "tags": [
+          "Suppliers"
+        ],
+        "responses": {
+          "200": {
+            "description": "All suppliers successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/supplier"
+                },
+                "example": {
+                  "message": "All suppliers successfully deleted"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/suppliers/{id}": {
+      "get": {
+        "summary": "Return supplier by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Supplier Id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Suppliers"
+        ],
+        "responses": {
+          "200": {
+            "description": "Current supplier by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "schema": "#/components/schemas/category",
+                  "example": [
+                    {
+                      "supplier_id": 1,
+                      "supplier_name": "John Doe",
+                      "supplier_contact": 81222983022,
+                      "supplier_email": "johndoe@example.com",
+                      "created_at": "2024-08-12T18:34:52.000Z",
+                      "updated_at": "2024-08-12T18:34:52.000Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Supplier not found, check your id."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete supplier by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Supplier Id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Suppliers"
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted supplier",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "schema": "#/components/schemas/category",
+                  "example": [
+                    {
+                      "message": "Supplier successfully deleted!"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Supplier not found, check your id."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update supplier",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Supplier Id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/supplier"
+              },
+              "example": {
+                "name": "John Lira"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Suppliers"
+        ],
+        "responses": {
+          "200": {
+            "description": "Supplier updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "schema": "#/components/schemas/category",
+                  "example": [
+                    {
+                      "message": "Supplier successfully updated"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Submit at least a field to update a supplier."
+          },
+          "404": {
+            "description": "Supplier not found, check your id."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Returns all users",
+        "parameters": [],
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "A users array",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "schema": "#/components/schemas/supplier",
+                  "example": [
+                    {
+                      "user_id": 1,
+                      "user_name": "John Doe",
+                      "user_email": "johndoe@example.id",
+                      "user_role": "admin",
+                      "created_at": "2024-08-12T21:07:26.000Z",
+                      "updated_at": "2024-08-12T21:08:33.000Z"
+                    },
+                    {
+                      "user_id": 1,
+                      "user_name": "Alex Doe",
+                      "user_email": "doealex@example.id",
+                      "user_role": "staff",
+                      "created_at": "2024-08-12T21:07:26.000Z",
+                      "updated_at": "2024-08-12T21:08:33.000Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "There are no registered users"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a new user",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user"
+              },
+              "example": {
+                "name": "John doe",
+                "email": "johndoe@example.com",
+                "password": "password",
+                "role": "admin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Users created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                },
+                "example": {
+                  "message": "Supplier successfully created",
+                  "insertId": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Submit all fields to create a supplier."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete all users",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "All users successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                },
+                "example": {
+                  "message": "All users successfully deleted"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Return user by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "User Id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "Current user by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "schema": "#/components/schemas/user",
+                  "example": {
+                    "user_id": 1,
+                    "user_name": "John Doe",
+                    "user_email": "johndoe@example.id",
+                    "user_role": "admin",
+                    "created_at": "2024-08-12T21:07:26.000Z",
+                    "updated_at": "2024-08-12T21:08:33.000Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found, check your id."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "user Id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "schema": "#/components/schemas/user",
+                  "example": [
+                    {
+                      "message": "User successfully deleted!"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found, check your id."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update User",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "User Id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user"
+              },
+              "example": {
+                "name": "John Lira"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "User updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "schema": "#/components/schemas/category",
+                  "example": [
+                    {
+                      "message": "User successfully updated"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Submit at least a field for update a user."
+          },
+          "404": {
+            "description": "User not found, check your id."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "summary": "Returns all products",
+        "parameters": [],
+        "tags": [
+          "Products"
+        ],
+        "responses": {
+          "200": {
+            "description": "A products array",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/product"
+                  },
+                  "example": [
+                    {
+                      "product_id": 1,
+                      "product_name": "Product A",
+                      "product_description": "Description of Product A",
+                      "product_price": 99.99,
+                      "product_quantity": 10,
+                      "category_id": 1,
+                      "supplier_id": 2,
+                      "created_at": "2024-08-13T10:00:00.000Z",
+                      "updated_at": "2024-08-13T10:00:00.000Z"
+                    },
+                    {
+                      "product_id": 2,
+                      "product_name": "Product B",
+                      "product_description": "Description of Product B",
+                      "product_price": 49.99,
+                      "product_quantity": 5,
+                      "category_id": 2,
+                      "supplier_id": 1,
+                      "created_at": "2024-08-13T10:00:00.000Z",
+                      "updated_at": "2024-08-13T10:00:00.000Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No products found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a new product",
+        "tags": [
+          "Products"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/product"
+              },
+              "example": {
+                "product_name": "Product C",
+                "product_description": "Description of Product C",
+                "product_price": 19.99,
+                "product_quantity": 20,
+                "category_id": 1,
+                "supplier_id": 2
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Product created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/product"
+                },
+                "example": {
+                  "message": "Product successfully created",
+                  "insertId": 3
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Submit all required fields to create a product."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete all products",
+        "tags": [
+          "Products"
+        ],
+        "responses": {
+          "200": {
+            "description": "All products successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/product"
+                },
+                "example": {
+                  "message": "All products successfully deleted"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "summary": "Return product by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Product Id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "responses": {
+          "200": {
+            "description": "Current product by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/product"
+                },
+                "example": {
+                  "product_id": 1,
+                  "product_name": "Product A",
+                  "product_description": "Description of Product A",
+                  "product_price": 99.99,
+                  "product_quantity": 10,
+                  "category_id": 1,
+                  "supplier_id": 2,
+                  "created_at": "2024-08-13T10:00:00.000Z",
+                  "updated_at": "2024-08-13T10:00:00.000Z"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found, check your id."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete product by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Product Id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/product"
+                },
+                "example": {
+                  "message": "Product successfully deleted!"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found, check your id."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update product",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Product Id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/product"
+              },
+              "example": {
+                "product_name": "Updated Product Name",
+                "product_description": "Updated description",
+                "product_price": 29.99,
+                "product_quantity": 15,
+                "category_id": 2,
+                "supplier_id": 1
+              }
+            }
+          }
+        },
+        "tags": [
+          "Products"
+        ],
+        "responses": {
+          "200": {
+            "description": "Product updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/product"
+                },
+                "example": {
+                  "message": "Product successfully updated"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Submit at least one field to update a product."
+          },
+          "404": {
+            "description": "Product not found, check your id."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "category": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "created_at": {
+            "type": "date"
+          },
+          "updated_at": {
+            "type": "date"
+          }
+        }
+      },
+      "supplier": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "contact": {
+            "type": "integer"
+          },
+          "email": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "created_at": {
+            "type": "date"
+          },
+          "updated_at": {
+            "type": "date"
+          }
+        }
+      },
+      "user": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "created_at": {
+            "type": "date"
+          },
+          "updated_at": {
+            "type": "date"
+          }
+        }
+      },
+      "product": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "integer"
+          },
+          "product_name": {
+            "type": "string"
+          },
+          "product_description": {
+            "type": "string"
+          },
+          "product_price": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "product_quantity": {
+            "type": "integer"
+          },
+          "category_id": {
+            "type": "integer"
+          },
+          "supplier_id": {
+            "type": "integer"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}
