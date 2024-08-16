@@ -98,7 +98,7 @@ export const validateTransactionParams = async (req, res, next) => {
 }
 export const validateSupplierBody = async (req, res, next) => {
   try {
-    const id = req.params.supplierId;
+    const id = req.body.supplierId;
     if (!id) {
       return res.status(400).send({ message: "Supplier ID not provided." });
     }
@@ -113,7 +113,7 @@ export const validateSupplierBody = async (req, res, next) => {
 }
 export const validateCategoryBody = async (req, res, next) => {
   try {
-    const id = req.params.categoryId;
+    const id = req.body.categoryId;
     if (!id) {
       return res.status(400).send({ message: "Category ID not provided." });
     }
@@ -128,7 +128,7 @@ export const validateCategoryBody = async (req, res, next) => {
 }
 export const validateUserBody = async (req, res, next) => {
   try {
-    const id = req.params.userId;
+    const id = req.body.userId;
     if (!id) {
       return res.status(400).send({ message: "User ID not provided." });
     }
@@ -143,7 +143,7 @@ export const validateUserBody = async (req, res, next) => {
 }
 export const validateProductBody = async (req, res, next) => {
   try {
-    const id = req.params.productId;
+    const id = req.body.productId;
     if (!id) {
       return res.status(400).send({ message: "Product ID not provided." });
     }

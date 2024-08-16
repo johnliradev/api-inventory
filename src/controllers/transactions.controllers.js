@@ -1,13 +1,16 @@
-import { createTransactionService, deleteTransactionService, getAllTransactionsService, getTransactionByIdService, updateTransactionService } from "../services/transactions.services";
+import { createTransactionService, deleteAllTransactionsService, deleteTransactionService, getAllTransactionsService, getTransactionByIdService, updateTransactionService } from "../services/transactions.services.js";
 
 export const getAllTransactions = async (req, res) => {
   try {
-    const transactions = await getAllTransactionsService();
-    res.status(200).json(transactions);
+    const transactions = await getAllTransactionsService()
+    if (!transactions.length) {
+      return res.status(404).send({ message: "There are no registered transactions" })
+    }
+    return res.status(200).send(transactions)
   } catch (error) {
-    return res.status(500).send(`Server error: ${error}`);
+    return res.status(500).send(`Server error: ${error}`)
   }
-};
+}
 export const getTransactionById = async (req, res) => {
   try {
     const id = req.params.id;
@@ -50,7 +53,7 @@ export const deleteTransaction = async (req, res) => {
 };
 export const deleteAllTransactions = async (req, res) => {
   try {
-    await deleteTransactionService();
+    await deleteAllTransactionsService();
     res.status(200).json({ message: 'All transactions deleted successfully' });
   } catch (error) {
     return res.status(500).send(`Server error: ${error}`);

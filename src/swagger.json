@@ -1044,6 +1044,261 @@
           }
         }
       }
+    },
+    "/transactions": {
+      "get": {
+        "summary": "Returns all stock transactions",
+        "tags": [
+          "Transactions"
+        ],
+        "responses": {
+          "200": {
+            "description": "A transactions array",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/transaction"
+                  },
+                  "example": [
+                    {
+                      "transaction_id": 1,
+                      "product_id": 1,
+                      "user_id": 2,
+                      "transaction_quantity": 10,
+                      "transaction_type": "IN",
+                      "created_at": "2024-08-13T10:00:00.000Z"
+                    },
+                    {
+                      "transaction_id": 2,
+                      "product_id": 2,
+                      "user_id": 3,
+                      "transaction_quantity": 5,
+                      "transaction_type": "OUT",
+                      "created_at": "2024-08-13T11:00:00.000Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No transactions found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a new stock transaction",
+        "tags": [
+          "Transactions"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/transaction"
+              },
+              "example": {
+                "product_id": 1,
+                "user_id": 2,
+                "transaction_quantity": 15,
+                "transaction_type": "IN"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/transaction"
+                },
+                "example": {
+                  "message": "Transaction successfully created",
+                  "insertId": 3
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Submit all required fields to create a transaction."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete all transactions",
+        "tags": [
+          "Transactions"
+        ],
+        "responses": {
+          "200": {
+            "description": "All transactions successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/transaction"
+                },
+                "example": {
+                  "message": "All transactions successfully deleted"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/transactions/{id}": {
+      "get": {
+        "summary": "Return transaction by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Transaction Id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Transactions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Current transaction by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/transaction"
+                },
+                "example": {
+                  "transaction_id": 1,
+                  "product_id": 1,
+                  "user_id": 2,
+                  "transaction_quantity": 10,
+                  "transaction_type": "IN",
+                  "created_at": "2024-08-13T10:00:00.000Z"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found, check your id."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete transaction by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Transaction Id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Transactions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/transaction"
+                },
+                "example": {
+                  "message": "Transaction successfully deleted!"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found, check your id."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update transaction",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Transaction Id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/transaction"
+              },
+              "example": {
+                "product_id": 2,
+                "user_id": 3,
+                "transaction_quantity": 20,
+                "transaction_type": "OUT"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Transactions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/transaction"
+                },
+                "example": {
+                  "message": "Transaction successfully updated"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Submit at least one field to update a transaction."
+          },
+          "404": {
+            "description": "Transaction not found, check your id."
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1144,6 +1399,34 @@
             "format": "date-time"
           },
           "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "transaction": {
+        "type": "object",
+        "properties": {
+          "transaction_id": {
+            "type": "integer"
+          },
+          "product_id": {
+            "type": "integer"
+          },
+          "user_id": {
+            "type": "integer"
+          },
+          "transaction_quantity": {
+            "type": "integer"
+          },
+          "transaction_type": {
+            "type": "string",
+            "enum": [
+              "IN",
+              "OUT"
+            ]
+          },
+          "created_at": {
             "type": "string",
             "format": "date-time"
           }

@@ -10,10 +10,9 @@ export const getAllUsersService = async () => {
     throw error;
   }
 };
-
 export const getUserByIdService = async (id) => {
   try {
-    const query = 'SELECT * FROM users WHERE user_id = ?';
+    const query = 'SELECT user_id, user_name, user_email, user_role, created_at, updated_at FROM users WHERE user_id = ?';
     const [rows] = await pool.execute(query, [id]);
     return rows;
   } catch (error) {
@@ -21,7 +20,6 @@ export const getUserByIdService = async (id) => {
     throw error;
   }
 };
-
 export const createUserService = async (name, email, password, role) => {
   try {
     const saltRounds = 10;
@@ -37,7 +35,6 @@ export const createUserService = async (name, email, password, role) => {
     throw error;
   }
 };
-
 export const updateUserService = async (id, fieldsToUpdate) => {
   try {
     const { name, email, password, role } = fieldsToUpdate;
@@ -70,7 +67,6 @@ export const updateUserService = async (id, fieldsToUpdate) => {
     throw error;
   }
 };
-
 export const deleteUserService = async (id) => {
   try {
     const query = 'DELETE FROM users WHERE user_id = ?';
@@ -81,7 +77,6 @@ export const deleteUserService = async (id) => {
     throw error;
   }
 };
-
 export const deleteAllUsersService = async () => {
   try {
     const result = await pool.execute('DELETE FROM users');
